@@ -1,7 +1,7 @@
 package br.com.ifsul.pontoeletronico.service;
 
 import br.com.ifsul.pontoeletronico.model.Usuario;
-import br.com.ifsul.pontoeletronico.repository.UserRepository;
+import br.com.ifsul.pontoeletronico.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,28 +11,31 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UsuarioService {
 
-    private final UserRepository userRepository;
+    private final UsuarioRepository usuarioRepository;
 
     public String salvarUsuario(String name, String email, String equipe) {
-        userRepository.save(buildUsuario(name, email, equipe));
+        usuarioRepository.save(buildUsuario(name, email, equipe));
 
         return "Salvo!";
     }
 
     public String excluirUsuario(Integer id) {
-        userRepository.deleteById(id);
+        usuarioRepository.deleteById(id);
 
         return "Deletado!";
     }
 
-    public String editarUsuario(String name, String email, String equipe) {
-        userRepository.save(buildUsuario(name, email, equipe));
+    public String editarUsuario(Integer id, String name, String email, String equipe) {
+        Usuario usuario = buildUsuario(name, email, equipe);
+        usuario.setId(id);
+
+        usuarioRepository.save(usuario);
 
         return "Editado!";
     }
 
     public List<Usuario> buscarTodos() {
-        return userRepository.findAll();
+        return usuarioRepository.findAll();
     }
 
     private Usuario buildUsuario(String name, String email, String equipe) {
