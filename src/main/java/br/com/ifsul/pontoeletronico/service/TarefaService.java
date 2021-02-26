@@ -41,6 +41,10 @@ public class TarefaService {
         return tarefaRepository.findAll();
     }
 
+    public Tarefa buscarTarefaPorId(Integer id) {
+        return tarefaRepository.findById(id).orElse(new Tarefa());
+    }
+
     private Tarefa buildTarefa(String nome, LocalTime localTime, List<Usuario> idUsuarios, List<Ponto> idPontos) {
         return Tarefa.builder().nome(nome).trabalhoCompleto(localTime).usuarios(idUsuarios).pontosTrabalhados(idPontos).build();
     }

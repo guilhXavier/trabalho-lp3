@@ -41,7 +41,7 @@ public class PontoService {
 
         pontoRepository.save(ponto);
 
-        return "Novo ponto registrado.";
+        return "Nova tarefa registrada.";
     }
 
     public String excluirPonto(Integer id) {
@@ -52,6 +52,10 @@ public class PontoService {
 
     public Ponto encontrarPontoPorId(Integer id) {
         return pontoRepository.findById(id).orElse(new Ponto());
+    }
+
+    public Iterable<Ponto> buscarPontos() {
+        return pontoRepository.findAll();
     }
 
     private Ponto registrarProximoPonto(Ponto ponto) {
