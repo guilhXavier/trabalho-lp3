@@ -7,7 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping(path = "/user")
+@RequestMapping(path = "/usuario")
 @RequiredArgsConstructor
 public class UsuarioController {
 
@@ -15,7 +15,7 @@ public class UsuarioController {
 
     @PostMapping
     public @ResponseBody
-    String addUser(@RequestParam String name, @RequestParam String email, @RequestParam String equipe) {
+    String addUsuario(@RequestParam String name, @RequestParam String email, @RequestParam String equipe) {
         return usuarioService.salvarUsuario(name, email, equipe);
     }
 
@@ -33,7 +33,7 @@ public class UsuarioController {
 
     @GetMapping
     public @ResponseBody
-    Iterable<Usuario> getUsers() {
+    Iterable<Usuario> getUsuarios() {
         return usuarioService.buscarTodos();
     }
 }

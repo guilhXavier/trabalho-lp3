@@ -1,5 +1,6 @@
 package br.com.ifsul.pontoeletronico.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

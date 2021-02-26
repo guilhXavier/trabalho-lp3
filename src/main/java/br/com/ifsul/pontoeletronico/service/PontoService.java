@@ -44,8 +44,14 @@ public class PontoService {
         return "Novo ponto registrado.";
     }
 
-    public Optional<Ponto> encontrarPontoPorId(Integer id) {
-        return pontoRepository.findById(id);
+    public String excluirPonto(Integer id) {
+        pontoRepository.deleteById(id);
+
+        return "Ponto deletado";
+    }
+
+    public Ponto encontrarPontoPorId(Integer id) {
+        return pontoRepository.findById(id).orElse(new Ponto());
     }
 
     private Ponto registrarProximoPonto(Ponto ponto) {
