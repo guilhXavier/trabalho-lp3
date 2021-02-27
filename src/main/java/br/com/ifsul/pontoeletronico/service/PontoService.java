@@ -54,7 +54,7 @@ public class PontoService {
         return pontoRepository.findById(id).orElse(new Ponto());
     }
 
-    public Iterable<Ponto> buscarPontos() {
+    public List<Ponto> buscarPontos() {
         return pontoRepository.findAll();
     }
 
