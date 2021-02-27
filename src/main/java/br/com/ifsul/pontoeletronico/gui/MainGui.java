@@ -17,6 +17,8 @@ public class MainGui {
 
     private final TarefaGui tarefaGui;
 
+    private final PontoGui pontoGui;
+
     public JFrame criarMenuPrincipal() {
         JFrame janela = new JFrame("Trabalho");
         janela.setSize(480, 320);
@@ -52,6 +54,13 @@ public class MainGui {
             @Override
             public void actionPerformed(ActionEvent e) {
                 tarefaGui.run();
+            }
+        });
+
+        btPontos.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                pontoGui.run();
             }
         });
 

@@ -2,7 +2,6 @@ package br.com.ifsul.pontoeletronico.gui;
 
 import br.com.ifsul.pontoeletronico.model.Ponto;
 import br.com.ifsul.pontoeletronico.model.Tarefa;
-import br.com.ifsul.pontoeletronico.model.Usuario;
 import br.com.ifsul.pontoeletronico.service.PontoService;
 import br.com.ifsul.pontoeletronico.service.TarefaService;
 import br.com.ifsul.pontoeletronico.service.UsuarioService;
@@ -13,14 +12,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.time.LocalTime;
 import java.util.List;
 import java.util.Vector;
 import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
-public class TarefaGui {
+public class PontoGui {
 
     private final TarefaService tarefaService;
 
@@ -32,8 +30,7 @@ public class TarefaGui {
     JButton btListar = new JButton("Listar");
 
     private JFrame criarUiCadastro() {
-        List<Integer> usuarioIdList = usuarioService.buscarTodos().stream().mapToInt(Usuario::getId).boxed().collect(Collectors.toList());
-        List<Integer> pontoIdList = pontoService.buscarPontos().stream().mapToInt(Ponto::getId).boxed().collect(Collectors.toList());
+        List<Integer> tarefaIdList = tarefaService.buscarTarefas().stream().mapToInt(Tarefa::getId).boxed().collect(Collectors.toList());
 
         JFrame janela = new JFrame("Trabalho");
         janela.setSize(480, 320);
@@ -44,30 +41,11 @@ public class TarefaGui {
         JPanel painel = new JPanel();
         painel.setLayout(new GridLayout(0, 2));
 
-        JLabel lblNome = new JLabel("Nome");
-        JLabel lblTempo = new JLabel("Tempo");
-        JLabel lblUsuarios = new JLabel("Usuarios");
-        JLabel lblPontos = new JLabel("Pontos");
+        JLabel lblTarefas = new JLabel("Tarefas");
+        JList<Integer> listTarefas = new JList<Integer>(new Vector<Integer>(tarefaIdList));
 
-        JTextField txtNome = new JTextField("Nome");
-        JTextField txtTempo = new JTextField("Tempo");
-        JList<Integer> listUsuarios = new JList<Integer>(new Vector<Integer>(usuarioIdList));
-        JList<Integer> listPontos = new JList<Integer>(new Vector<Integer>(pontoIdList));
-
-        painel.add(lblNome);
-        painel.add(txtNome);
-
-        painel.add(lblTempo);
-        painel.add(txtTempo);
-
-        painel.add(lblUsuarios);
-        painel.add(listUsuarios);
-
-        painel.add(new JLabel());
-        painel.add(new JLabel());
-
-        painel.add(lblPontos);
-        painel.add(listPontos);
+        painel.add(lblTarefas);
+        painel.add(listTarefas);
 
         painel.add(new JLabel());
         painel.add(new JLabel());
@@ -78,7 +56,7 @@ public class TarefaGui {
         btCadastrar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String s = tarefaService.cadastrarTarefa(txtNome.getText(), LocalTime.parse(txtTempo.getText()), idsToUsuario(listUsuarios.getSelectedValuesList()), idsToPonto(listPontos.getSelectedValuesList()));
+                String s = pontoService.cadastrarPonto(idsToTarefa(listTarefas.getSelectedValuesList()));
 
                 JOptionPane.showMessageDialog(null, s);
             }
@@ -94,7 +72,7 @@ public class TarefaGui {
     }
 
     private JFrame criarUiListagem() {
-        List<Tarefa> tarefas = tarefaService.buscarTarefas();
+        List<Ponto> pontos = pontoService.buscarPontos();
 
         JFrame janela = new JFrame("Usuarios");
         janela.setSize(768, 600);
@@ -103,14 +81,14 @@ public class TarefaGui {
         janela.setVisible(true);
 
         JPanel painel = new JPanel();
-        painel.setLayout(new GridLayout(tarefas.size(), 3));
+        painel.setLayout(new GridLayout(pontos.size(), 3));
 
-        tarefas.forEach(elem -> {
-            JLabel lblTarefa = new JLabel("Tarefa: " + elem.getNome() + "| Tempo: " + elem.getTrabalhoCompleto());
+        pontos.forEach(elem -> {
+            JLabel lblPonto = new JLabel("Primeiro ponto: " + elem.getPrimeiroPonto() + "| Data: " + elem.getData());
             JButton btDeletar = new JButton("Deletar");
             JButton btEditar = new JButton("Editar");
 
-            painel.add(lblTarefa);
+            painel.add(lblPonto);
             painel.add(btDeletar);
             painel.add(btEditar);
         });
@@ -135,17 +113,10 @@ public class TarefaGui {
         });
     }
 
-    private List<Usuario> idsToUsuario(List<Integer> ids) {
+    private List<Tarefa> idsToTarefa(List<Integer> ids) {
         return ids
                 .stream()
-                .map(usuarioService::buscarPorId)
-                .collect(Collectors.toList());
-    }
-
-    private List<Ponto> idsToPonto(List<Integer> ids) {
-        return ids
-                .stream()
-                .map(pontoService::encontrarPontoPorId)
+                .map(tarefaService::buscarTarefaPorId)
                 .collect(Collectors.toList());
     }
 
